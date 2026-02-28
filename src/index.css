@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  
+  --color-cream: #F9F6F0;
+  --color-burgundy: #800020;
+  --color-gold: #D4AF37;
+  --color-charcoal: #333333;
+  --color-charcoal-light: #666666;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-charcoal);
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-gold); border-radius: 10px; opacity: 0.5; }
+
+/* Tree Styles for Desktop */
+.family-tree ul {
+  padding-top: 16px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  margin: 0;
+  gap: 8px;
+}
+
+.family-tree li {
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  padding: 16px 4px 0 4px;
+}
+
+/* Connectors */
+.family-tree li::before, .family-tree li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 50%;
+  border-top: 1px solid rgba(139, 69, 19, 0.3);
+  width: 50%;
+  height: 16px;
+  transition: opacity 0.3s ease, border-color 0.3s ease;
+  opacity: 1;
+}
+
+.family-tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 1px solid rgba(139, 69, 19, 0.3);
+}
+
+/* Remove connectors for single children */
+.family-tree li:only-child::after, .family-tree li:only-child::before {
+  display: none;
+}
+
+.family-tree li:only-child {
+  padding-top: 0;
+}
+
+/* Remove left/right connectors for first/last child */
+.family-tree li:first-child::before, .family-tree li:last-child::after {
+  border: 0 none;
+}
+
+/* Add back the vertical connector to the parent */
+.family-tree li:last-child::before {
+  border-right: 1px solid rgba(139, 69, 19, 0.3);
+  border-radius: 0 8px 0 0;
+}
+
+.family-tree li:first-child::after {
+  border-radius: 8px 0 0 0;
+}
+
+/* Vertical line from parent to children */
+.family-tree ul ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 1px solid rgba(139, 69, 19, 0.3);
+  width: 0;
+  height: 16px;
+  transition: opacity 0.3s ease, border-color 0.3s ease;
+  opacity: 1;
+}
+
+.spouse-connector {
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  opacity: 1;
+}
+
+/* Hover Branch Logic */
+.family-tree.has-hovered li::before,
+.family-tree.has-hovered li::after,
+.family-tree.has-hovered ul ul::before,
+.family-tree.has-hovered .spouse-connector {
+  opacity: 0.15;
+}
+
+.family-tree.has-hovered li.highlight-branch > ul::before,
+.family-tree.has-hovered li.highlight-branch ul li::before,
+.family-tree.has-hovered li.highlight-branch ul li::after,
+.family-tree.has-hovered li.highlight-branch .spouse-connector {
+  opacity: 1;
+  border-color: rgba(139, 69, 19, 0.6);
+}
+
+.family-tree.has-hovered li.highlight-branch .spouse-connector {
+  background-color: rgba(139, 69, 19, 0.6);
+}
+
+/* Vertical Text */
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.writing-vertical-rl {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+/* Trống Đồng Background */
+.trong-dong-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%238b4513' stroke-width='2' stroke-opacity='0.08'%3E%3Ccircle cx='400' cy='400' r='380'/%3E%3Ccircle cx='400' cy='400' r='350'/%3E%3Ccircle cx='400' cy='400' r='300'/%3E%3Ccircle cx='400' cy='400' r='250'/%3E%3Ccircle cx='400' cy='400' r='200'/%3E%3Ccircle cx='400' cy='400' r='150'/%3E%3Ccircle cx='400' cy='400' r='100'/%3E%3Cpath d='M400 350 L415 385 L450 385 L420 410 L430 450 L400 425 L370 450 L380 410 L350 385 L385 385 Z' fill='%238b4513' fill-opacity='0.08'/%3E%3C/g%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 800px 800px;
+}
