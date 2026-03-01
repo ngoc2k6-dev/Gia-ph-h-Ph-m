@@ -26,3 +26,12 @@ export type TreeNode = {
   mainMember: SheetMember;
   families: FamilyGroup[];
 };
+
+export type ClanEvent = {
+  ID: string;
+  TenSuKien: string;
+  NgayDienRa: string;
+  LoaiSuKien: 'CoDinh' | 'LinhHoat' | 'Gio';
+  GhiChu: string;
+  isLunar: boolean;
+};

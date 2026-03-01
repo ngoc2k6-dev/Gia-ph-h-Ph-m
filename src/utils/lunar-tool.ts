@@ -77,6 +77,34 @@ export function getAnniversarySolarDate(lunarDateStr: string, year?: number): Da
 }
 
 /**
+ * Lấy ngày dương lịch cho một sự kiện (năm 2026).
+ * @param dateStr Chuỗi ngày (DD/MM hoặc DD/MM/YYYY)
+ * @param isLunar Có phải ngày âm lịch không
+ * @returns Đối tượng Date
+ */
+export function getEventDate(dateStr: string, isLunar: boolean = true): Date | null {
+  if (!dateStr) {
+    console.warn("getEventDate: dateStr is null or empty");
+    return null;
+  }
+
+  const parsed = parseLunarDate(dateStr);
+  if (!parsed) {
+    console.warn(`getEventDate: Invalid date format: ${dateStr}`);
+    return null;
+  }
+
+  const targetYear = 2026; // Cố định năm 2026 theo yêu cầu
+
+  if (isLunar) {
+    return getSolarDate(parsed.day, parsed.month, targetYear);
+  } else {
+    // Nếu là dương lịch, tạo đối tượng Date từ DD/MM/YYYY hoặc DD/MM
+    return new Date(targetYear, parsed.month - 1, parsed.day);
+  }
+}
+
+/**
  * Định dạng ngày dương lịch sang chuỗi DD/MM/YYYY
  */
 export function formatDate(date: Date): string {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Xarrow, { Xwrapper } from 'react-xarrows';
@@ -14,15 +14,17 @@ interface DesktopTreeNodeProps {
   setHoveredNodeId: (id: string | null) => void;
   isAncestorHovered?: boolean;
   isRoot?: boolean;
+  path?: "smooth" | "grid" | "straight" | "step";
 }
 
-export const DesktopTreeNode = ({ 
+export const DesktopTreeNode = React.memo(({ 
   node, 
   onMemberClick,
   hoveredNodeId,
   setHoveredNodeId,
   isAncestorHovered = false,
-  isRoot = false
+  isRoot = false,
+  path = "smooth"
 }: DesktopTreeNodeProps) => {
   const hasChildren = node.families.some(f => f.children.length > 0);
   
@@ -34,13 +36,13 @@ export const DesktopTreeNode = ({
     <li className={cn(isHighlighted && "highlight-branch")}>
       <div className="flex flex-col items-center node-content">
         <motion.div 
-          className="flex flex-row items-start relative z-10 gap-2"
+          className={cn("flex flex-row items-start relative gap-2", isHoveredDirectly ? "z-[100]" : "z-10")}
           onMouseEnter={() => setHoveredNodeId(node.mainMember.ID)}
           onMouseLeave={() => setHoveredNodeId(null)}
           animate={{ opacity: isDimmed ? 0.25 : 1 }}
           transition={{ duration: 0.3 }}
         >
-          <div id={`node-${node.mainMember.ID}`} className="relative">
+          <div id={`node-${node.mainMember.ID}`} className="relative w-[56px] shrink-0 inline-block">
             {isRoot && (
               <>
                 <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[3px] h-24 bg-gradient-to-b from-transparent via-[#8b4513]/20 to-[#8b4513]/60 z-0" />
@@ -79,15 +81,15 @@ export const DesktopTreeNode = ({
           {node.families.flatMap(f => f.children).map(childNode => (
             <React.Fragment key={childNode.mainMember.ID}>
               <Xarrow 
-                start={`dot-bottom-${node.mainMember.ID}`}
-                end={`dot-top-${childNode.mainMember.ID}`}
+                start={`node-${node.mainMember.ID}`}
+                end={`node-${childNode.mainMember.ID}`}
                 startAnchor="bottom"
                 endAnchor="top"
-                path="smooth"
+                path={path}
                 color={isHighlighted ? "rgba(139, 69, 19, 0.6)" : hoveredNodeId ? "rgba(139, 69, 19, 0.15)" : "rgba(139, 69, 19, 0.3)"}
                 strokeWidth={isHighlighted ? 2.5 : 2}
                 showHead={false}
-                curveness={0.6}
+                curveness={path === "smooth" ? 0.6 : 15}
                 zIndex={0}
               />
               <DesktopTreeNode 
@@ -96,6 +98,7 @@ export const DesktopTreeNode = ({
                 hoveredNodeId={hoveredNodeId}
                 setHoveredNodeId={setHoveredNodeId}
                 isAncestorHovered={isHighlighted}
+                path={path}
               />
             </React.Fragment>
           ))}
@@ -103,4 +106,4 @@ export const DesktopTreeNode = ({
       )}
     </li>
   );
-};
+});

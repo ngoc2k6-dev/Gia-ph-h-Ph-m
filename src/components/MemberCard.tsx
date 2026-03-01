@@ -65,10 +65,20 @@ export const MemberCard = ({ member, isMain, onClick }: { member: SheetMember, i
       </div>
 
       {/* Tooltip */}
-      <div className="absolute left-full top-0 ml-2 w-max opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity bg-charcoal/95 backdrop-blur text-cream text-[10px] py-1.5 px-2.5 rounded shadow-lg z-50 flex flex-col gap-0.5 border border-gold/20">
-        <span className="font-bold text-gold text-xs">{member.Hoten}</span>
-        <span>{ngaySinhNorm ? (ngaySinhNorm.length === 4 ? ngaySinhNorm : ngaySinhNorm.split('/')[2]) : '???'} - {ngayMatNorm ? (ngayMatNorm.length === 4 ? ngayMatNorm : ngayMatNorm.split('/')[2]) : 'Hiện tại'}</span>
-        {member.HocVi_ChucVu && <span className="text-[#b8860b] font-semibold mt-0.5">{member.HocVi_ChucVu}</span>}
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-3 w-max opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 translate-y-2 group-hover:translate-y-0 bg-[#1a1a1a]/95 backdrop-blur-md text-cream text-[11px] py-2.5 px-3.5 rounded-xl shadow-2xl z-[9999] flex flex-col gap-1 border border-gold/30 min-w-[160px]">
+        <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#1a1a1a] border-r border-b border-gold/30 rotate-45"></div>
+        <span className="font-serif font-black text-gold text-sm border-b border-gold/20 pb-1 mb-1">{member.Hoten}</span>
+        <div className="flex items-center gap-2 text-white/90">
+          <span className="font-bold">Đời {member.Doithu}</span>
+          <span className="w-1 h-1 rounded-full bg-gold/40"></span>
+          <span>{ngaySinhNorm ? (ngaySinhNorm.length === 4 ? ngaySinhNorm : ngaySinhNorm.split('/')[2]) : '???'} - {ngayMatNorm ? (ngayMatNorm.length === 4 ? ngayMatNorm : ngayMatNorm.split('/')[2]) : 'Hiện tại'}</span>
+        </div>
+        {member.HocVi_ChucVu && (
+          <span className="text-gold/90 font-medium italic mt-0.5 leading-tight">{member.HocVi_ChucVu}</span>
+        )}
+        {member.Loaithanhvien && (
+          <span className="text-[9px] uppercase tracking-widest text-white/50 font-bold mt-1">{member.Loaithanhvien}</span>
+        )}
       </div>
     </div>
   );

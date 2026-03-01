@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { SheetMember, TreeNode, FamilyGroup } from '../types';
+import { SheetMember, TreeNode, FamilyGroup, ClanEvent } from '../types';
 
 const GOOGLE_SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbxiGs088QCJXUeuqZIvmGosomBfFWgh6ZwlL2ivy2O4SnOBfxOkSjxcSl-d7RSRdfA/exec';
 
@@ -16,6 +16,7 @@ const MOCK_DATA: SheetMember[] = [
 
 export function useFamilyData() {
   const [data, setData] = useState<SheetMember[]>([]);
+  const [events, setEvents] = useState<ClanEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,9 +29,10 @@ export function useFamilyData() {
         if (!response.ok) throw new Error('Không thể tải dữ liệu từ Google Sheet');
         const result = await response.json();
         
-        const rawData = result.data || result;
-        if (Array.isArray(rawData) && rawData.length > 0) {
-          const mappedData: SheetMember[] = rawData.map((m: any) => {
+        // Xử lý dữ liệu từ Tab Danhsach
+        const rawMembers = result.Danhsach || result.data || (Array.isArray(result) ? result : []);
+        if (Array.isArray(rawMembers) && rawMembers.length > 0) {
+          const mappedData: SheetMember[] = rawMembers.map((m: any) => {
             const findVal = (obj: any, keywords: string[]) => {
               for (const key in obj) {
                 const kl = key.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -50,8 +52,8 @@ export function useFamilyData() {
               ID_Me: String(findVal(m, ['idme']) || m.ID_Me || '') || null,
               ThuTuCon: Number(findVal(m, ['thutucon']) || m.ThuTuCon || 0),
               NgaySinh: String(findVal(m, ['ngaysinh']) || m.NgaySinh || ''),
-              // Tìm kiếm cực kỳ linh hoạt cho cột ngày mất
-              NgayMat: String(findVal(m, ['ngay', 'mat']) || m.NgayMat || ''),
+              // Ưu tiên 'NgayMat (Âm lịch)' theo yêu cầu
+              NgayMat: String(m['NgayMat (Âm lịch)'] || findVal(m, ['ngay', 'mat', 'am']) || findVal(m, ['ngay', 'mat']) || m.NgayMat || ''),
               Tieusungan: String(findVal(m, ['tieusungan']) || m.Tieusungan || ''),
               Loaithanhvien: String(findVal(m, ['loaithanhvien']) || m.Loaithanhvien || ''),
               HocVi_ChucVu: String(findVal(m, ['hocvi']) || findVal(m, ['chucvu']) || m.HocVi_ChucVu || ''),
@@ -62,9 +64,40 @@ export function useFamilyData() {
             };
           });
           setData(mappedData);
-        } else {
-          throw new Error('Định dạng dữ liệu không hợp lệ');
         }
+
+        // Xử lý dữ liệu từ Tab Event
+        const rawEvents = result.Event || [];
+        if (Array.isArray(rawEvents)) {
+          const mappedEvents: ClanEvent[] = rawEvents.map((e: any, idx: number) => {
+            const findVal = (obj: any, keywords: string[]) => {
+              for (const key in obj) {
+                const kl = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (keywords.every(kw => kl.includes(kw))) {
+                  return obj[key];
+                }
+              }
+              return undefined;
+            };
+
+            const loai = String(findVal(e, ['loai', 'su', 'kien']) || e.LoaiSuKien || 'CoDinh');
+            return {
+              ID: String(e.ID || idx),
+              TenSuKien: String(findVal(e, ['ten', 'su', 'kien']) || e.TenSuKien || ''),
+              NgayDienRa: String(findVal(e, ['ngay', 'dien', 'ra']) || e.NgayDienRa || ''),
+              LoaiSuKien: (loai === 'LinhHoat' || loai === 'Gio') ? loai : 'CoDinh',
+              GhiChu: String(findVal(e, ['ghi', 'chu']) || e.GhiChu || ''),
+              isLunar: loai !== 'LinhHoat' // Mặc định là âm lịch cho CoDinh và Gio
+            };
+          });
+          setEvents(mappedEvents);
+        }
+
+        if (data.length === 0 && (!rawMembers || rawMembers.length === 0)) {
+           // Nếu không có dữ liệu thành viên, dùng mock
+           setData(MOCK_DATA);
+        }
+
       } catch (err: any) {
         console.error("Fetch error:", err);
         setError("Có lỗi xảy ra khi tải dữ liệu. Đang hiển thị dữ liệu mẫu.");
@@ -162,5 +195,5 @@ export function useFamilyData() {
     return 'Chưa cập nhật';
   };
 
-  return { data, treeData, generations, loading, error, getParents, getSpouse };
+  return { data, events, treeData, generations, loading, error, getParents, getSpouse };
 }

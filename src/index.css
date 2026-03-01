@@ -44,7 +44,7 @@ body {
   text-align: center;
   list-style-type: none;
   position: relative;
-  padding: 40px 8px 0 8px;
+  padding: 40px 0 0 0;
 }
 
 .family-tree li:only-child {
