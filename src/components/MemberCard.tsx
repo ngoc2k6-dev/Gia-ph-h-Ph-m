@@ -8,32 +8,56 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+const normalizeDateString = (dateVal: string | number) => {
+  if (!dateVal) return '';
+  const dateStr = String(dateVal);
+  
+  if (dateStr.includes('T') && dateStr.includes('Z')) {
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) {
+      return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+    }
+  }
+  
+  if (dateStr.includes('-') && dateStr.split('-').length === 3) {
+    const parts = dateStr.split('-');
+    if (parts[0].length === 4) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+  }
+  
+  return dateStr;
+};
+
 export const MemberCard = ({ member, isMain, onClick }: { member: SheetMember, isMain: boolean, onClick: () => void }) => {
   const isDeceased = !!member.NgayMat;
   const isMale = member.Gioitinh === 'Nam';
   
   const words = member.Hoten.split(' ');
   
+  const ngaySinhNorm = normalizeDateString(member.NgaySinh);
+  const ngayMatNorm = normalizeDateString(member.NgayMat);
+  
   return (
     <div 
       onClick={onClick}
       className={cn(
-        "group relative flex flex-col items-center py-2 px-1 rounded-sm cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md z-10 w-[56px]",
-        isMain ? "bg-[#f4e8c1] border border-gold/60 shadow-sm" : "bg-[#f9f6f0] border border-charcoal/5 shadow-sm opacity-60 hover:opacity-100",
-        isDeceased && isMain ? "opacity-80" : ""
+        "group relative flex flex-col items-center py-2 px-1 rounded-[2px] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md z-10 w-[56px]",
+        isMain ? "bg-[#D4AF37] border border-[#D4AF37]/80 shadow-sm" : "bg-[#FDFDFD] border border-charcoal/10 shadow-sm opacity-80 hover:opacity-100",
+        isDeceased && isMain ? "opacity-90" : ""
       )}
     >
       <div className={cn(
         "w-7 h-7 rounded-full shadow-inner flex items-center justify-center mb-2 shrink-0",
-        isMain ? "border border-gold" : "border border-charcoal/10",
-        isMale ? "bg-blue-50 text-blue-700" : "bg-rose-50 text-rose-700",
-        isDeceased && "grayscale opacity-70"
+        isMain ? "border border-white/40" : "border border-charcoal/10",
+        isMale ? (isMain ? "bg-white/20 text-[#7B1113]" : "bg-blue-50 text-blue-700") : (isMain ? "bg-white/20 text-[#7B1113]" : "bg-rose-50 text-rose-700"),
+        isDeceased && "grayscale opacity-80"
       )}>
         <User size={14} />
       </div>
       <div className={cn(
-        "flex flex-col items-center font-serif text-[12px] leading-tight text-center uppercase",
-        isMain ? "text-burgundy font-black" : "text-charcoal-light font-semibold"
+        "flex flex-col items-center font-serif text-[12px] leading-[1.0] text-center uppercase",
+        isMain ? "text-[#7B1113] font-black" : "text-[#4A4A4A] font-semibold"
       )}>
         {words.map((word, idx) => (
           <span key={idx} className="block">{word}</span>
@@ -43,7 +67,7 @@ export const MemberCard = ({ member, isMain, onClick }: { member: SheetMember, i
       {/* Tooltip */}
       <div className="absolute left-full top-0 ml-2 w-max opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity bg-charcoal/95 backdrop-blur text-cream text-[10px] py-1.5 px-2.5 rounded shadow-lg z-50 flex flex-col gap-0.5 border border-gold/20">
         <span className="font-bold text-gold text-xs">{member.Hoten}</span>
-        <span>{member.NgaySinh ? (String(member.NgaySinh).length === 4 ? member.NgaySinh : String(member.NgaySinh).split('/')[2]) : '???'} - {member.NgayMat ? (String(member.NgayMat).length === 4 ? member.NgayMat : String(member.NgayMat).split('/')[2]) : 'Hiện tại'}</span>
+        <span>{ngaySinhNorm ? (ngaySinhNorm.length === 4 ? ngaySinhNorm : ngaySinhNorm.split('/')[2]) : '???'} - {ngayMatNorm ? (ngayMatNorm.length === 4 ? ngayMatNorm : ngayMatNorm.split('/')[2]) : 'Hiện tại'}</span>
         {member.HocVi_ChucVu && <span className="text-[#b8860b] font-semibold mt-0.5">{member.HocVi_ChucVu}</span>}
       </div>
     </div>

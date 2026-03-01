@@ -4,14 +4,14 @@ import { SheetMember, TreeNode, FamilyGroup } from '../types';
 const GOOGLE_SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbxiGs088QCJXUeuqZIvmGosomBfFWgh6ZwlL2ivy2O4SnOBfxOkSjxcSl-d7RSRdfA/exec';
 
 const MOCK_DATA: SheetMember[] = [
-  { ID: '1', Hoten: 'Phạm Văn Cội', Gioitinh: 'Nam', Doithu: 1, ID_Cha: null, ID_Me: null, ThuTuCon: 1, NgaySinh: '1890', NgayMat: '15/08/1960', LoaiNgayMat: 'Âm', Tieusungan: 'Thủy tổ dòng họ Phạm. Người có công khai hoang lập ấp.', Loaithanhvien: 'Chính', HocVi_ChucVu: 'Quan Tri Huyện', TenThuy: 'Phúc Đức', NgayGio_Am: '15/08', ViTriMo_QueQuan: 'Nghĩa trang dòng họ' },
-  { ID: '2', Hoten: 'Nguyễn Thị Nụ', Gioitinh: 'Nữ', Doithu: 1, ID_Cha: null, ID_Me: null, ThuTuCon: 1, NgaySinh: '1895', NgayMat: '1970', LoaiNgayMat: 'Dương', Tieusungan: 'Chính thất.', Loaithanhvien: 'Phụ', HocVi_ChucVu: '', TenThuy: 'Từ Mẫn', NgayGio_Am: '10/03', ViTriMo_QueQuan: 'Nghĩa trang dòng họ' },
-  { ID: '3', Hoten: 'Phạm Văn Nhất', Gioitinh: 'Nam', Doithu: 2, ID_Cha: '1', ID_Me: '2', ThuTuCon: 1, NgaySinh: '10/05/1920', NgayMat: '20/11/1990', LoaiNgayMat: 'Âm', Tieusungan: 'Trưởng nam. Kế thừa và phát triển cơ nghiệp của cha.', Loaithanhvien: 'Chính', HocVi_ChucVu: 'Trưởng Tộc', TenThuy: 'Trung Trực', NgayGio_Am: '20/11', ViTriMo_QueQuan: 'Khu A' },
-  { ID: '4', Hoten: 'Trần Thị Mai', Gioitinh: 'Nữ', Doithu: 2, ID_Cha: null, ID_Me: null, ThuTuCon: 1, NgaySinh: '1925', NgayMat: '2005', LoaiNgayMat: 'Dương', Tieusungan: 'Vợ ông Nhất.', Loaithanhvien: 'Phụ', HocVi_ChucVu: '', TenThuy: 'Đoan Trang', NgayGio_Am: '05/01', ViTriMo_QueQuan: 'Khu A' },
-  { ID: '5', Hoten: 'Phạm Thị Ba', Gioitinh: 'Nữ', Doithu: 2, ID_Cha: '1', ID_Me: '2', ThuTuCon: 2, NgaySinh: '1922', NgayMat: '1995', LoaiNgayMat: 'Dương', Tieusungan: 'Trưởng nữ. Đảm đang, tháo vát.', Loaithanhvien: 'Chính', HocVi_ChucVu: '', TenThuy: 'Hiền Thục', NgayGio_Am: '12/04', ViTriMo_QueQuan: 'Làng bên' },
-  { ID: '6', Hoten: 'Phạm Văn Trưởng', Gioitinh: 'Nam', Doithu: 3, ID_Cha: '3', ID_Me: '4', ThuTuCon: 1, NgaySinh: '1950', NgayMat: '', LoaiNgayMat: '', Tieusungan: 'Trưởng tôn. Hiện là trưởng tộc, coi sóc nhà thờ họ.', Loaithanhvien: 'Chính', HocVi_ChucVu: 'Tiến Sĩ', TenThuy: '', NgayGio_Am: '', ViTriMo_QueQuan: 'Hà Nội' },
-  { ID: '7', Hoten: 'Phạm Văn Thứ', Gioitinh: 'Nam', Doithu: 3, ID_Cha: '3', ID_Me: '4', ThuTuCon: 2, NgaySinh: '1955', NgayMat: '', LoaiNgayMat: '', Tieusungan: 'Con trai thứ. Giáo viên về hưu.', Loaithanhvien: 'Chính', HocVi_ChucVu: '', TenThuy: '', NgayGio_Am: '', ViTriMo_QueQuan: 'Hà Nội' },
-  { ID: '8', Hoten: 'Phạm Văn Chắt', Gioitinh: 'Nam', Doithu: 4, ID_Cha: '6', ID_Me: null, ThuTuCon: 1, NgaySinh: '1980', NgayMat: '', LoaiNgayMat: '', Tieusungan: 'Đích tôn đời thứ 4. Kỹ sư phần mềm.', Loaithanhvien: 'Chính', HocVi_ChucVu: 'Giám Đốc', TenThuy: '', NgayGio_Am: '', ViTriMo_QueQuan: 'TP.HCM' },
+  { ID: '1', Hoten: 'Phạm Văn Cội', Gioitinh: 'Nam', Doithu: 1, ID_Cha: null, ID_Me: null, ThuTuCon: 1, NgaySinh: '1890', NgayMat: '15/08/1960', Tieusungan: 'Thủy tổ dòng họ Phạm. Người có công khai hoang lập ấp.', Loaithanhvien: 'Chính', HocVi_ChucVu: 'Quan Tri Huyện', TenThuy: 'Phúc Đức', ViTriMo_QueQuan: 'Nghĩa trang dòng họ' },
+  { ID: '2', Hoten: 'Nguyễn Thị Nụ', Gioitinh: 'Nữ', Doithu: 1, ID_Cha: null, ID_Me: null, ThuTuCon: 1, NgaySinh: '1895', NgayMat: '10/03/1970', Tieusungan: 'Chính thất.', Loaithanhvien: 'Phụ', HocVi_ChucVu: '', TenThuy: 'Từ Mẫn', ViTriMo_QueQuan: 'Nghĩa trang dòng họ' },
+  { ID: '3', Hoten: 'Phạm Văn Nhất', Gioitinh: 'Nam', Doithu: 2, ID_Cha: '1', ID_Me: '2', ThuTuCon: 1, NgaySinh: '10/05/1920', NgayMat: '20/11/1990', Tieusungan: 'Trưởng nam. Kế thừa và phát triển cơ nghiệp của cha.', Loaithanhvien: 'Chính', HocVi_ChucVu: 'Trưởng Tộc', TenThuy: 'Trung Trực', ViTriMo_QueQuan: 'Khu A' },
+  { ID: '4', Hoten: 'Trần Thị Mai', Gioitinh: 'Nữ', Doithu: 2, ID_Cha: null, ID_Me: null, ThuTuCon: 1, NgaySinh: '1925', NgayMat: '05/01/2005', Tieusungan: 'Vợ ông Nhất.', Loaithanhvien: 'Phụ', HocVi_ChucVu: '', TenThuy: 'Đoan Trang', ViTriMo_QueQuan: 'Khu A' },
+  { ID: '5', Hoten: 'Phạm Thị Ba', Gioitinh: 'Nữ', Doithu: 2, ID_Cha: '1', ID_Me: '2', ThuTuCon: 2, NgaySinh: '1922', NgayMat: '12/04/1995', Tieusungan: 'Trưởng nữ. Đảm đang, tháo vát.', Loaithanhvien: 'Chính', HocVi_ChucVu: '', TenThuy: 'Hiền Thục', ViTriMo_QueQuan: 'Làng bên' },
+  { ID: '6', Hoten: 'Phạm Văn Trưởng', Gioitinh: 'Nam', Doithu: 3, ID_Cha: '3', ID_Me: '4', ThuTuCon: 1, NgaySinh: '1950', NgayMat: '', Tieusungan: 'Trưởng tôn. Hiện là trưởng tộc, coi sóc nhà thờ họ.', Loaithanhvien: 'Chính', HocVi_ChucVu: 'Tiến Sĩ', TenThuy: '', ViTriMo_QueQuan: 'Hà Nội' },
+  { ID: '7', Hoten: 'Phạm Văn Thứ', Gioitinh: 'Nam', Doithu: 3, ID_Cha: '3', ID_Me: '4', ThuTuCon: 2, NgaySinh: '1955', NgayMat: '', Tieusungan: 'Con trai thứ. Giáo viên về hưu.', Loaithanhvien: 'Chính', HocVi_ChucVu: '', TenThuy: '', ViTriMo_QueQuan: 'Hà Nội' },
+  { ID: '8', Hoten: 'Phạm Văn Chắt', Gioitinh: 'Nam', Doithu: 4, ID_Cha: '6', ID_Me: null, ThuTuCon: 1, NgaySinh: '1980', NgayMat: '', Tieusungan: 'Đích tôn đời thứ 4. Kỹ sư phần mềm.', Loaithanhvien: 'Chính', HocVi_ChucVu: 'Giám Đốc', TenThuy: '', ViTriMo_QueQuan: 'TP.HCM' },
 ];
 
 export function useFamilyData() {
@@ -30,7 +30,38 @@ export function useFamilyData() {
         
         const rawData = result.data || result;
         if (Array.isArray(rawData) && rawData.length > 0) {
-          setData(rawData);
+          const mappedData: SheetMember[] = rawData.map((m: any) => {
+            const findVal = (obj: any, keywords: string[]) => {
+              for (const key in obj) {
+                const kl = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (keywords.every(kw => kl.includes(kw))) {
+                  return obj[key];
+                }
+              }
+              return undefined;
+            };
+
+            return {
+              ID: String(findVal(m, ['id']) || m.ID || ''),
+              Hoten: String(findVal(m, ['hoten']) || m.Hoten || ''),
+              Gioitinh: String(findVal(m, ['gioitinh']) || m.Gioitinh || ''),
+              Doithu: Number(findVal(m, ['doithu']) || m.Doithu || 0),
+              ID_Cha: String(findVal(m, ['idcha']) || m.ID_Cha || '') || null,
+              ID_Me: String(findVal(m, ['idme']) || m.ID_Me || '') || null,
+              ThuTuCon: Number(findVal(m, ['thutucon']) || m.ThuTuCon || 0),
+              NgaySinh: String(findVal(m, ['ngaysinh']) || m.NgaySinh || ''),
+              // Tìm kiếm cực kỳ linh hoạt cho cột ngày mất
+              NgayMat: String(findVal(m, ['ngay', 'mat']) || m.NgayMat || ''),
+              Tieusungan: String(findVal(m, ['tieusungan']) || m.Tieusungan || ''),
+              Loaithanhvien: String(findVal(m, ['loaithanhvien']) || m.Loaithanhvien || ''),
+              HocVi_ChucVu: String(findVal(m, ['hocvi']) || findVal(m, ['chucvu']) || m.HocVi_ChucVu || ''),
+              TenThuy: String(findVal(m, ['tenthuy']) || m.TenThuy || ''),
+              ViTriMo_QueQuan: String(findVal(m, ['vitrimo']) || findVal(m, ['quequan']) || findVal(m, ['diachi']) || m.ViTriMo_QueQuan || m.DiaChi_HienTai || ''),
+              HoTen_VoChong: String(findVal(m, ['vochong']) || m.HoTen_VoChong || ''),
+              SDT_LienHe: String(findVal(m, ['sdt']) || findVal(m, ['lienhe']) || m.SDT_LienHe || ''),
+            };
+          });
+          setData(mappedData);
         } else {
           throw new Error('Định dạng dữ liệu không hợp lệ');
         }
@@ -100,7 +131,7 @@ export function useFamilyData() {
 
   const generations = useMemo(() => {
     const gens = new Set(data.map(m => m.Doithu).filter(d => d != null));
-    return Array.from(gens).sort((a, b) => a - b);
+    return Array.from(gens).sort((a: number, b: number) => a - b);
   }, [data]);
 
   // Tìm tên cha mẹ dựa trên ID
@@ -115,6 +146,9 @@ export function useFamilyData() {
 
   // Tìm bạn đời dựa trên logic con chung hoặc loại thành viên
   const getSpouse = (member: SheetMember) => {
+    // Ưu tiên dùng cột HoTen_VoChong nếu có
+    if (member.HoTen_VoChong) return member.HoTen_VoChong;
+
     // Cách 1: Tìm qua con chung
     const children = data.filter(m => m.ID_Cha === member.ID || m.ID_Me === member.ID);
     for (const child of children) {
@@ -125,9 +159,6 @@ export function useFamilyData() {
       }
     }
     
-    // Nếu không có con chung, tìm dựa trên logic thành viên phụ kết nối với thành viên chính
-    // (Trong dữ liệu mẫu, thành viên phụ thường không có ID_Cha/ID_Me, nhưng có thể có Tieusungan ghi "Vợ ông X" - tuy nhiên khó parse)
-    // Hoặc nếu là thành viên phụ, tìm người chính có cùng con.
     return 'Chưa cập nhật';
   };
 

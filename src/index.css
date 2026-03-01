@@ -24,78 +24,31 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-gold); border-radius: 10px; opacity: 0.5; }
 
-/* Tree Styles for Desktop */
+/* Tree Styles for Desktop & Zoomable Mobile */
+.family-tree {
+  padding: 40px;
+  transform-origin: center center;
+}
+
 .family-tree ul {
-  padding-top: 16px;
+  padding-top: 40px;
   position: relative;
   display: flex;
   justify-content: center;
   padding-left: 0;
   margin: 0;
-  gap: 8px;
+  gap: 32px;
 }
 
 .family-tree li {
   text-align: center;
   list-style-type: none;
   position: relative;
-  padding: 16px 4px 0 4px;
-}
-
-/* Connectors */
-.family-tree li::before, .family-tree li::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 50%;
-  border-top: 1px solid rgba(139, 69, 19, 0.3);
-  width: 50%;
-  height: 16px;
-  transition: opacity 0.3s ease, border-color 0.3s ease;
-  opacity: 1;
-}
-
-.family-tree li::after {
-  right: auto;
-  left: 50%;
-  border-left: 1px solid rgba(139, 69, 19, 0.3);
-}
-
-/* Remove connectors for single children */
-.family-tree li:only-child::after, .family-tree li:only-child::before {
-  display: none;
+  padding: 40px 8px 0 8px;
 }
 
 .family-tree li:only-child {
   padding-top: 0;
-}
-
-/* Remove left/right connectors for first/last child */
-.family-tree li:first-child::before, .family-tree li:last-child::after {
-  border: 0 none;
-}
-
-/* Add back the vertical connector to the parent */
-.family-tree li:last-child::before {
-  border-right: 1px solid rgba(139, 69, 19, 0.3);
-  border-radius: 0 8px 0 0;
-}
-
-.family-tree li:first-child::after {
-  border-radius: 8px 0 0 0;
-}
-
-/* Vertical line from parent to children */
-.family-tree ul ul::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  border-left: 1px solid rgba(139, 69, 19, 0.3);
-  width: 0;
-  height: 16px;
-  transition: opacity 0.3s ease, border-color 0.3s ease;
-  opacity: 1;
 }
 
 .spouse-connector {
@@ -104,22 +57,12 @@ body {
 }
 
 /* Hover Branch Logic */
-.family-tree.has-hovered li::before,
-.family-tree.has-hovered li::after,
-.family-tree.has-hovered ul ul::before,
 .family-tree.has-hovered .spouse-connector {
   opacity: 0.15;
 }
 
-.family-tree.has-hovered li.highlight-branch > ul::before,
-.family-tree.has-hovered li.highlight-branch ul li::before,
-.family-tree.has-hovered li.highlight-branch ul li::after,
 .family-tree.has-hovered li.highlight-branch .spouse-connector {
   opacity: 1;
-  border-color: rgba(139, 69, 19, 0.6);
-}
-
-.family-tree.has-hovered li.highlight-branch .spouse-connector {
   background-color: rgba(139, 69, 19, 0.6);
 }
 

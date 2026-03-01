@@ -2,7 +2,7 @@ import React from 'react';
 
 export const Background = () => {
   return (
-    <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden bg-[#f4e8c1]">
+    <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden bg-[#F4EBD0]">
       <div 
         className="absolute inset-0 opacity-20"
         style={{

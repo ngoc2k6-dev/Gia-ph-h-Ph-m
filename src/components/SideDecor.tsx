@@ -1,22 +1,43 @@
 import React from 'react';
 
 export const SideDecor = () => {
+  const leftCouplet = ['MỘC', 'BẢN', 'THỦY', 'NGUYÊN'];
+  const rightCouplet = ['BÁCH', 'THẾ', 'BẢN', 'CHI'];
+
+  const WoodSquare = ({ char }: { char: string, key?: React.Key }) => (
+    <div className="group relative w-14 h-14 flex items-center justify-center">
+      {/* Outer wooden frame */}
+      <div className="absolute inset-0 bg-[#3d2517] rounded-sm shadow-lg border-2 border-[#5a3a26] transform rotate-3 group-hover:rotate-0 transition-transform duration-500"></div>
+      {/* Inner carved area */}
+      <div className="absolute inset-1.5 bg-[#2a1810] rounded-sm border border-[#1a0f0a] shadow-inner flex items-center justify-center">
+        {/* Wood grain texture overlay */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/wood-pattern.png")' }}></div>
+        <span className="relative text-[#e6c280] font-serif font-bold text-xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] z-10">
+          {char}
+        </span>
+      </div>
+      {/* Decorative corners */}
+      <div className="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-[#d4af37]/40"></div>
+      <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-[#d4af37]/40"></div>
+    </div>
+  );
+
   return (
     <>
-      <div className="fixed left-4 top-1/2 -translate-y-1/2 w-16 h-[80vh] pointer-events-none z-0 hidden lg:flex flex-col items-center justify-between opacity-40">
-        <div className="w-8 h-32 border-l-2 border-t-2 border-gold/40 rounded-tl-full" />
-        <div className="writing-vertical-rl text-burgundy font-serif font-bold text-xl tracking-[0.5em] drop-shadow-sm">
-          MỘC BẢN THỦY NGUYÊN
+      <div className="fixed left-6 top-1/2 -translate-y-1/2 pointer-events-none z-0 hidden lg:flex flex-col items-center justify-center opacity-90">
+        <div className="flex flex-col items-center gap-6">
+          {leftCouplet.map((char, idx) => (
+            <WoodSquare key={idx} char={char} />
+          ))}
         </div>
-        <div className="w-8 h-32 border-l-2 border-b-2 border-gold/40 rounded-bl-full" />
       </div>
       
-      <div className="fixed right-4 top-1/2 -translate-y-1/2 w-16 h-[80vh] pointer-events-none z-0 hidden lg:flex flex-col items-center justify-between opacity-40">
-        <div className="w-8 h-32 border-r-2 border-t-2 border-gold/40 rounded-tr-full" />
-        <div className="writing-vertical-rl text-burgundy font-serif font-bold text-xl tracking-[0.5em] drop-shadow-sm">
-          BÁCH THẾ BẢN CHI
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 pointer-events-none z-0 hidden lg:flex flex-col items-center justify-center opacity-90">
+        <div className="flex flex-col items-center gap-6">
+          {rightCouplet.map((char, idx) => (
+            <WoodSquare key={idx} char={char} />
+          ))}
         </div>
-        <div className="w-8 h-32 border-r-2 border-b-2 border-gold/40 rounded-br-full" />
       </div>
     </>
   );

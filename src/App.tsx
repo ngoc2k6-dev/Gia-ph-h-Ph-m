@@ -1,56 +1,21 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search, ChevronDown, Filter, Loader2, AlertCircle, Bell } from 'lucide-react';
+import { Search, ChevronDown, Filter, Loader2, AlertCircle, Calendar as CalendarIcon, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { Lunar } from 'lunar-javascript';
+import { Xwrapper } from 'react-xarrows';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 import { SheetMember } from './types';
 import { useFamilyData } from './hooks/useFamilyData';
 import { DragonHeader } from './components/DragonHeader';
 import { SideDecor } from './components/SideDecor';
 import { Background } from './components/Background';
-import { DesktopTreeNode, MobileTreeNode } from './components/FamilyTree';
+import { DesktopTreeNode } from './components/FamilyTree';
 import { MemberModal } from './components/MemberModal';
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-const AnniversaryReminder = ({ data }: { data: SheetMember[] }) => {
-  const upcoming = useMemo(() => {
-    const todayLunar = Lunar.fromDate(new Date());
-    const currentMonth = todayLunar.getMonth();
-    const currentDay = todayLunar.getDay();
-    
-    return data.filter(m => {
-      if (!m.NgayGio_Am) return false;
-      const parts = m.NgayGio_Am.split('/');
-      if (parts.length >= 2) {
-        const day = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10);
-        
-        if (month === currentMonth) {
-          const diff = day - currentDay;
-          return diff >= 0 && diff <= 7;
-        }
-      }
-      return false;
-    }).slice(0, 3);
-  }, [data]);
-
-  if (upcoming.length === 0) return null;
-
-  return (
-    <div className="bg-burgundy text-cream px-4 py-3 flex items-center justify-center gap-3 text-sm font-medium shadow-md relative z-40">
-      <Bell size={16} className="animate-pulse text-gold" />
-      <span>
-        Sắp đến ngày giỗ của: {upcoming.map(m => `${m.Hoten} (${m.NgayGio_Am} Âm lịch)`).join(', ')}
-      </span>
-    </div>
-  );
-};
+import { AnniversaryList } from './components/AnniversaryList';
+import { cn } from './utils/cn';
 
 export default function FamilyTreePage() {
   const { data, treeData, generations, loading, error, getParents, getSpouse } = useFamilyData();
@@ -60,6 +25,7 @@ export default function FamilyTreePage() {
   const [selectedMember, setSelectedMember] = useState<SheetMember | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const [isAnniversaryOpen, setIsAnniversaryOpen] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -82,19 +48,25 @@ export default function FamilyTreePage() {
   }, [data, searchQuery, selectedGen]);
 
   return (
-    <div className="h-screen bg-cream text-charcoal font-sans flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#F4EBD0] text-charcoal font-sans flex flex-col overflow-hidden">
       <Background />
       <DragonHeader />
       <SideDecor />
       
-      <AnniversaryReminder data={data} />
-      
       <main className="flex-1 relative w-full h-full">
         {/* Floating Header */}
         <div className="absolute top-4 left-4 right-4 z-30 flex flex-col sm:flex-row justify-between items-start sm:items-start gap-2 pointer-events-none">
-          {/* Left: Title */}
+          {/* Left: Title & Menu */}
           <div className="flex items-center gap-2 pointer-events-auto bg-white/90 backdrop-blur-md p-1.5 rounded-xl shadow-sm border border-gold/30">
             <h1 className="font-serif text-lg font-bold text-burgundy px-3">Phạm Gia</h1>
+            <div className="w-px h-6 bg-gold/30 mx-1"></div>
+            <button 
+              onClick={() => setIsAnniversaryOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-gold/10 text-burgundy transition-colors text-sm font-medium"
+            >
+              <CalendarIcon size={16} />
+              <span className="hidden sm:inline">Giỗ Chạp</span>
+            </button>
           </div>
 
           {/* Right: Search */}
@@ -129,7 +101,7 @@ export default function FamilyTreePage() {
         </div>
 
         {/* Content Area */}
-        <div className="w-full h-full overflow-auto pt-28 sm:pt-8 pb-12 px-4 sm:px-8 relative z-10">
+        <div className="w-full h-full overflow-auto pt-32 sm:pt-24 pb-12 px-4 sm:px-8 relative z-10">
           {loading ? (
             <div className="absolute inset-0 flex flex-col items-center justify-center text-burgundy">
               <Loader2 className="animate-spin mb-4" size={32} />
@@ -168,28 +140,55 @@ export default function FamilyTreePage() {
                   )}
                 </div>
               ) : (
-                <div className="w-full h-full">
-                  {isMobile ? (
-                    <div className="max-w-md mx-auto space-y-2">
-                      {treeData.map(root => (
-                        <MobileTreeNode key={root.mainMember.ID} node={root} onMemberClick={setSelectedMember} />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className={cn("family-tree min-w-max flex justify-center", hoveredNodeId && "has-hovered")}>
-                      <ul>
-                        {treeData.map(root => (
-                          <DesktopTreeNode 
-                            key={root.mainMember.ID} 
-                            node={root} 
-                            onMemberClick={setSelectedMember} 
-                            hoveredNodeId={hoveredNodeId}
-                            setHoveredNodeId={setHoveredNodeId}
-                          />
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                <div className="w-full h-full relative">
+                  <TransformWrapper
+                    initialScale={isMobile ? 0.4 : 0.8}
+                    minScale={0.1}
+                    maxScale={2}
+                    centerOnInit={true}
+                    limitToBounds={false}
+                    wheel={{ step: 0.1 }}
+                    pinch={{ step: 5 }}
+                  >
+                    {({ zoomIn, zoomOut, resetTransform }) => (
+                      <>
+                        <div className="absolute bottom-6 right-6 z-40 flex flex-col gap-3 pointer-events-auto">
+                          <button onClick={() => zoomIn()} className="p-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gold/30 text-burgundy hover:bg-gold/10 transition-all active:scale-90">
+                            <ZoomIn size={24} />
+                          </button>
+                          <button onClick={() => zoomOut()} className="p-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gold/30 text-burgundy hover:bg-gold/10 transition-all active:scale-90">
+                            <ZoomOut size={24} />
+                          </button>
+                          <button onClick={() => resetTransform()} className="p-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gold/30 text-burgundy hover:bg-gold/10 transition-all active:scale-90">
+                            <RotateCcw size={24} />
+                          </button>
+                        </div>
+                        {isMobile && (
+                          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 bg-white/90 backdrop-blur-md px-5 py-2 rounded-full border border-gold/30 shadow-lg pointer-events-none">
+                            <p className="text-[11px] text-burgundy font-bold uppercase tracking-wider">Dùng 2 ngón tay để thu phóng • Kéo để di chuyển</p>
+                          </div>
+                        )}
+                        <TransformComponent wrapperClass="!w-full !h-full" contentClass="!w-full !h-full flex items-center justify-center">
+                          <div className={cn("family-tree min-w-max flex justify-center p-40", hoveredNodeId && "has-hovered")}>
+                            <Xwrapper>
+                              <ul>
+                                {treeData.map(root => (
+                                  <DesktopTreeNode 
+                                    key={root.mainMember.ID} 
+                                    node={root} 
+                                    onMemberClick={setSelectedMember} 
+                                    hoveredNodeId={hoveredNodeId}
+                                    setHoveredNodeId={setHoveredNodeId}
+                                    isRoot={true}
+                                  />
+                                ))}
+                              </ul>
+                            </Xwrapper>
+                          </div>
+                        </TransformComponent>
+                      </>
+                    )}
+                  </TransformWrapper>
                 </div>
               )}
             </div>
@@ -204,6 +203,14 @@ export default function FamilyTreePage() {
           fatherName={getParents(selectedMember).fatherName}
           motherName={getParents(selectedMember).motherName}
           spouseName={getSpouse(selectedMember)}
+        />
+      )}
+
+      {isAnniversaryOpen && (
+        <AnniversaryList 
+          data={data} 
+          onClose={() => setIsAnniversaryOpen(false)} 
+          getParents={getParents}
         />
       )}
     </div>

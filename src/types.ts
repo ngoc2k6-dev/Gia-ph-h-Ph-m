@@ -8,13 +8,13 @@ export type SheetMember = {
   ThuTuCon: number;
   NgaySinh: string;
   NgayMat: string;
-  LoaiNgayMat: string;
   Tieusungan: string;
   Loaithanhvien: string;
   HocVi_ChucVu: string;
   TenThuy: string;
-  NgayGio_Am: string;
   ViTriMo_QueQuan: string;
+  HoTen_VoChong?: string;
+  SDT_LienHe?: string;
 };
 
 export type FamilyGroup = {
