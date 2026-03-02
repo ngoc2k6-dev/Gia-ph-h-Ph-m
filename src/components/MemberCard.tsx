@@ -42,8 +42,8 @@ export const MemberCard = ({ member, isMain, onClick }: { member: SheetMember, i
     <div 
       onClick={onClick}
       className={cn(
-        "group relative flex flex-col items-center py-2 px-1 rounded-[2px] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md z-10 w-[56px]",
-        isMain ? "bg-[#D4AF37] border border-[#D4AF37]/80 shadow-sm" : "bg-[#FDFDFD] border border-charcoal/10 shadow-sm opacity-80 hover:opacity-100",
+        "group relative flex flex-col items-center py-2 px-1 rounded-[2px] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl z-10 w-[56px]",
+        isMain ? "bg-[#D4AF37] border border-[#D4AF37]/80 shadow-md" : "bg-[#FDFDFD] border border-charcoal/10 shadow-md opacity-80 hover:opacity-100",
         isDeceased && isMain ? "opacity-90" : ""
       )}
     >

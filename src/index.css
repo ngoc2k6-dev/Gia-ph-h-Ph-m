@@ -31,20 +31,20 @@ body {
 }
 
 .family-tree ul {
-  padding-top: 40px;
+  padding-top: 60px;
   position: relative;
   display: flex;
   justify-content: center;
   padding-left: 0;
   margin: 0;
-  gap: 32px;
+  gap: 48px; /* Increased gap for better aesthetics */
 }
 
 .family-tree li {
   text-align: center;
   list-style-type: none;
   position: relative;
-  padding: 40px 0 0 0;
+  padding: 60px 0 0 0;
 }
 
 .family-tree li:only-child {
@@ -63,7 +63,13 @@ body {
 
 .family-tree.has-hovered li.highlight-branch .spouse-connector {
   opacity: 1;
-  background-color: rgba(139, 69, 19, 0.6);
+  background-color: #8b4513;
+  box-shadow: 0 0 8px rgba(139, 69, 19, 0.4);
+}
+
+/* Xarrow Glow Effect */
+.xarrow-highlighted {
+  filter: drop-shadow(0px 0px 3px rgba(139, 69, 19, 0.5)) !important;
 }
 
 /* Vertical Text */

@@ -15,6 +15,8 @@ import { MemberModal } from './components/MemberModal';
 import { AnniversaryList } from './components/AnniversaryList';
 import { EventManager } from './components/EventManager';
 import { Logo } from './components/Logo';
+import { DragonHeader } from './components/DragonHeader';
+import { SideDecor } from './components/SideDecor';
 import { cn } from './utils/cn';
 
 export default function FamilyTreePage() {
@@ -61,8 +63,9 @@ export default function FamilyTreePage() {
   }, [data, searchQuery, selectedGen]);
 
   const treeContent = (
-    <div key={isMobile ? 'mobile' : 'desktop'} className={cn("family-tree min-w-max flex justify-center p-20 sm:p-40", hoveredNodeId && "has-hovered")}>
-      <ul>
+    <div key={isMobile ? 'mobile' : 'desktop'} className={cn("family-tree min-w-max flex justify-center p-20 sm:p-40 relative z-10", hoveredNodeId && "has-hovered")}>
+      <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px] z-0 pointer-events-none rounded-3xl mx-24 sm:mx-48 my-12 shadow-inner border border-white/20" />
+      <ul className="relative z-10">
         {treeData.map(root => (
           <DesktopTreeNode 
             key={root.mainMember.ID} 
@@ -79,10 +82,12 @@ export default function FamilyTreePage() {
   );
 
   return (
-    <div className="h-screen bg-[#F4EBD0] text-charcoal font-sans flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#F4EBD0] text-charcoal font-sans flex flex-col overflow-hidden relative">
       <Background />
+      <DragonHeader />
+      <SideDecor />
       
-      <main className="flex-1 relative w-full h-full flex flex-col">
+      <main className="flex-1 relative w-full h-full flex flex-col z-20 pt-28 sm:pt-24">
         {/* Navigation Bar - Optimized for PC and Mobile */}
         <div className="w-full bg-white/80 backdrop-blur-md border-b border-gold/20 z-30 px-4 py-2 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
           <div className="flex items-center justify-between w-full sm:w-auto gap-4">
@@ -134,7 +139,7 @@ export default function FamilyTreePage() {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 relative overflow-hidden">
+        <div className="flex-1 relative overflow-hidden z-10">
           {loading ? (
             <div className="absolute inset-0 flex flex-col items-center justify-center text-burgundy z-20">
               <Loader2 className="animate-spin mb-4" size={32} />

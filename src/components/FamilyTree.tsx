@@ -45,25 +45,31 @@ export const DesktopTreeNode = React.memo(({
           <div id={`node-${node.mainMember.ID}`} className="relative w-[56px] shrink-0 inline-block">
             {isRoot && (
               <>
-                <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[3px] h-24 bg-gradient-to-b from-transparent via-[#8b4513]/20 to-[#8b4513]/60 z-0" />
+                <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[2px] h-24 bg-gradient-to-b from-transparent via-[#8b4513]/10 to-[#8b4513]/40 z-0" />
                 <div 
                   id={`dot-top-${node.mainMember.ID}`} 
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#b8860b] shadow-md border border-[#8b4513]/60 z-20" 
-                />
+                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8860B] shadow-md border border-[#8b4513]/40 z-20 flex items-center justify-center" 
+                >
+                  <div className="w-1 h-1 rounded-full bg-white/30" />
+                </div>
               </>
             )}
             {!isRoot && (
               <div 
                 id={`dot-top-${node.mainMember.ID}`} 
-                className="absolute -top-3 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-[#b8860b] shadow-sm border border-[#8b4513]/50 z-20" 
-              />
+                className="absolute -top-3 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8860B] shadow-sm border border-[#8b4513]/40 z-20 flex items-center justify-center" 
+              >
+                <div className="w-0.5 h-0.5 rounded-full bg-white/30" />
+              </div>
             )}
             <MemberCard member={node.mainMember} isMain={true} onClick={() => onMemberClick(node.mainMember)} />
             {hasChildren && (
               <div 
                 id={`dot-bottom-${node.mainMember.ID}`} 
-                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-[#b8860b] shadow-sm border border-[#8b4513]/50 z-20" 
-              />
+                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8860B] shadow-sm border border-[#8b4513]/40 z-20 flex items-center justify-center" 
+              >
+                <div className="w-0.5 h-0.5 rounded-full bg-white/30" />
+              </div>
             )}
           </div>
           
@@ -81,16 +87,22 @@ export const DesktopTreeNode = React.memo(({
           {node.families.flatMap(f => f.children).map(childNode => (
             <React.Fragment key={childNode.mainMember.ID}>
               <Xarrow 
-                start={`node-${node.mainMember.ID}`}
-                end={`node-${childNode.mainMember.ID}`}
-                startAnchor="bottom"
-                endAnchor="top"
+                start={`dot-bottom-${node.mainMember.ID}`}
+                end={`dot-top-${childNode.mainMember.ID}`}
+                startAnchor="middle"
+                endAnchor="middle"
                 path={path}
-                color={isHighlighted ? "rgba(139, 69, 19, 0.6)" : hoveredNodeId ? "rgba(139, 69, 19, 0.15)" : "rgba(139, 69, 19, 0.3)"}
-                strokeWidth={isHighlighted ? 2.5 : 2}
+                color={isHighlighted ? "#8b4513" : hoveredNodeId ? "rgba(139, 69, 19, 0.1)" : "rgba(139, 69, 19, 0.4)"}
+                strokeWidth={isHighlighted ? 2.5 : 1.5}
                 showHead={false}
-                curveness={path === "smooth" ? 0.6 : 15}
+                curveness={path === "smooth" ? 0.6 : 10}
                 zIndex={0}
+                passProps={{
+                  filter: isHighlighted ? "drop-shadow(0px 0px 4px rgba(139, 69, 19, 0.4))" : "drop-shadow(0px 1px 1px rgba(0,0,0,0.1))",
+                  strokeLinecap: "round",
+                  strokeLinejoin: "round",
+                  className: isHighlighted ? "xarrow-highlighted" : ""
+                }}
               />
               <DesktopTreeNode 
                 node={childNode} 

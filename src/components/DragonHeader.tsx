@@ -2,7 +2,7 @@ import React from 'react';
 
 export const DragonHeader = () => {
   return (
-    <div className="absolute top-0 left-0 w-full h-28 pointer-events-none z-20 flex justify-center overflow-hidden opacity-95">
+    <div className="absolute top-0 left-0 w-full h-28 pointer-events-none z-10 flex justify-center overflow-hidden opacity-95">
       <div className="relative w-full max-w-5xl h-full flex items-start justify-center pt-1">
         <svg viewBox="0 0 800 120" className="w-full h-full drop-shadow-xl">
           <defs>
@@ -28,7 +28,7 @@ export const DragonHeader = () => {
             </filter>
           </defs>
           
-          <text x="400" y="75" fontFamily="serif" fontSize="44" fontWeight="900" fill="url(#gold-grad)" textAnchor="middle" letterSpacing="8" filter="url(#text-emboss)">
+          <text x="400" y="75" fontFamily="serif" fontSize="44" fontWeight="900" fill="#7B1113" textAnchor="middle" letterSpacing="8" filter="url(#text-emboss)">
             GIA PHẢ HỌ PHẠM
           </text>
         </svg>

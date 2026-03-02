@@ -7,9 +7,9 @@ export const SideDecor = () => {
   const WoodSquare = ({ char }: { char: string, key?: React.Key }) => (
     <div className="group relative w-14 h-14 flex items-center justify-center">
       {/* Outer wooden frame */}
-      <div className="absolute inset-0 bg-[#3d2517] rounded-sm shadow-lg border-2 border-[#5a3a26] transform rotate-3 group-hover:rotate-0 transition-transform duration-500"></div>
+      <div className="absolute inset-0 bg-black rounded-sm shadow-lg border-2 border-[#1a1a1a] transform rotate-3 group-hover:rotate-0 transition-transform duration-500"></div>
       {/* Inner carved area */}
-      <div className="absolute inset-1.5 bg-[#2a1810] rounded-sm border border-[#1a0f0a] shadow-inner flex items-center justify-center">
+      <div className="absolute inset-1.5 bg-[#111111] rounded-sm border border-black shadow-inner flex items-center justify-center">
         {/* Wood grain texture overlay */}
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/wood-pattern.png")' }}></div>
         <span className="relative text-[#e6c280] font-serif font-bold text-xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] z-10">
@@ -24,7 +24,7 @@ export const SideDecor = () => {
 
   return (
     <>
-      <div className="fixed left-6 top-1/2 -translate-y-1/2 pointer-events-none z-0 hidden lg:flex flex-col items-center justify-center opacity-90">
+      <div className="fixed left-6 top-1/2 -translate-y-1/2 pointer-events-none z-10 hidden lg:flex flex-col items-center justify-center opacity-90">
         <div className="flex flex-col items-center gap-6">
           {leftCouplet.map((char, idx) => (
             <WoodSquare key={idx} char={char} />
@@ -32,7 +32,7 @@ export const SideDecor = () => {
         </div>
       </div>
       
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 pointer-events-none z-0 hidden lg:flex flex-col items-center justify-center opacity-90">
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 pointer-events-none z-10 hidden lg:flex flex-col items-center justify-center opacity-90">
         <div className="flex flex-col items-center gap-6">
           {rightCouplet.map((char, idx) => (
             <WoodSquare key={idx} char={char} />

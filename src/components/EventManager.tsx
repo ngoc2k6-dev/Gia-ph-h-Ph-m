@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Calendar, Clock, Info, AlertCircle, Flower2, Star } from 'lucide-react';
 import { SheetMember, ClanEvent } from '../types';
 import { getEventDate, formatDate, parseLunarDate, isWithinNextNDays } from '../utils/lunar-tool';
+import { isSameDay } from 'date-fns';
 import { cn } from '../utils/cn';
 
 type TimelineEvent = {
@@ -14,6 +15,7 @@ type TimelineEvent = {
   category: string;
   note: string;
   isUpcoming: boolean;
+  isPast: boolean;
 };
 
 export const EventManager = ({ 
@@ -41,6 +43,7 @@ export const EventManager = ({
           const diffTime = solarDate.getTime() - referenceDate.getTime();
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
           const isUpcoming = diffDays >= 0 && diffDays <= 15;
+          const isPast = solarDate < referenceDate && !isSameDay(solarDate, referenceDate);
 
           items.push({
             id: `ann-${member.ID}`,
@@ -50,7 +53,8 @@ export const EventManager = ({
             type: 'anniversary',
             category: `Đời ${member.Doithu}`,
             note: member.Tieusungan || 'Tưởng nhớ người đã khuất.',
-            isUpcoming
+            isUpcoming,
+            isPast
           });
         }
       }
@@ -69,6 +73,7 @@ export const EventManager = ({
           const diffTime = solarDate.getTime() - referenceDate.getTime();
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
           const isUpcoming = diffDays >= 0 && diffDays <= 15;
+          const isPast = solarDate < referenceDate && !isSameDay(solarDate, referenceDate);
 
           items.push({
             id: `event-${event.ID}`,
@@ -78,7 +83,8 @@ export const EventManager = ({
             type: 'clan_event',
             category: event.LoaiSuKien === 'CoDinh' ? 'Cố định' : event.LoaiSuKien === 'LinhHoat' ? 'Linh hoạt' : 'Giỗ',
             note: event.GhiChu,
-            isUpcoming
+            isUpcoming,
+            isPast
           });
         }
       }
@@ -130,7 +136,10 @@ export const EventManager = ({
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="relative pl-12"
+                    className={cn(
+                      "relative pl-12 transition-opacity duration-500",
+                      event.isPast && "opacity-40 grayscale-[0.4]"
+                    )}
                   >
                     {/* Timeline Dot */}
                     <div className={cn(
@@ -192,7 +201,7 @@ export const EventManager = ({
           </div>
 
           <div className="p-4 bg-white/50 border-t border-gold/20 text-[10px] text-charcoal-light italic text-center relative z-10">
-            * Danh sách bao gồm Ngày Giỗ thành viên và các Sự kiện chung của Tộc họ trong năm 2026.
+            * Danh sách bao gồm Ngày Giỗ thành viên và các Sự kiện chung của Tộc họ trong năm 2026. Các mục mờ là sự kiện đã diễn ra.
           </div>
         </motion.div>
       </div>

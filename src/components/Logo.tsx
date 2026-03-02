@@ -46,7 +46,7 @@ export const Logo = ({ className }: { className?: string }) => {
         <div className="absolute -bottom-1 -right-1 w-2 h-2 rounded-full bg-gold/40"></div>
       </div>
       <div className="flex flex-col leading-tight">
-        <h1 className="font-serif font-black text-burgundy text-xl tracking-tight">PHẠM GIA</h1>
+        <h1 className="font-serif font-black text-[#7B1113] text-xl tracking-tight">GIA PHẢ HỌ PHẠM</h1>
         <div className="flex items-center gap-1.5">
           <div className="h-[1px] w-3 bg-gold/60"></div>
           <span className="text-[9px] text-gold font-bold tracking-[0.25em] uppercase">Tộc Phả Trường Tồn</span>
